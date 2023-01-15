@@ -1,11 +1,11 @@
-import { AST as Glimmer, traverse } from '@glimmer/syntax'
+import { AST as Glimmer, ASTv1, traverse } from '@glimmer/syntax'
 import { DEFAULT_NAMESPACE_NAME }   from './constants'
 
 /**
  * Checks is each statement
  */
 const isEachStatement = (node: Glimmer.Node): node is Glimmer.BlockStatement =>
-  node.type === 'BlockStatement' && node.path.original === 'each'
+  node.type === 'BlockStatement' && (node.path  as ASTv1.PathExpression).original === 'each'
 
 /**
  * Creates stack of namespaces
@@ -37,7 +37,7 @@ const createNamespaceStack = () => {
 /**
  * Prepares paths Glimmer AST for compatible with JS AST.
  */
-export const prepareProgramPaths = (program: Glimmer.Program, isComponent: boolean) => {
+export const prepareProgramPaths = (program: Glimmer.Template, isComponent: boolean) => {
   const namespaces = createNamespaceStack()
 
   // Global component namespace

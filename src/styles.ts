@@ -1,4 +1,4 @@
-import { AST as Glimmer, preprocess, print } from '@glimmer/syntax'
+import { AST as Glimmer, preprocess, print,  } from '@glimmer/syntax'
 import * as Babel                            from '@babel/types'
 import { parseExpression }                   from '@babel/parser'
 import { createConcat, resolveStatement }    from './expressions'
@@ -26,7 +26,7 @@ export const createStyleObject = (hbsStatement: Glimmer.TextNode | Glimmer.Conca
         item =>
           preprocess(item || '').body.filter(
             item => item.type === 'MustacheStatement' || item.type === 'TextNode'
-          ) as Array<Glimmer.TextNode | Glimmer.MustacheStatement>
+          ) as Glimmer.ConcatStatement['parts']
       )
 
       const key

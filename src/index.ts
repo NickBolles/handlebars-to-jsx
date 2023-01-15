@@ -33,7 +33,7 @@ export function compile(
   const isModule = !!options.isModule
   const includeImport = !!options.includeImport && isModule
 
-  const glimmerProgram = preprocess(hbsCode)
+  const glimmerProgram = preprocess(hbsCode, {createFixMeComments: true})
   const babelProgram: Babel.Program = createProgram(glimmerProgram, isComponent, isModule, includeImport)
 
   return generate(babelProgram).code

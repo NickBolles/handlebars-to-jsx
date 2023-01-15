@@ -1,4 +1,4 @@
-import { AST as Glimmer }                                                  from '@glimmer/syntax'
+import { AST as Glimmer, ASTv1 }                                                  from '@glimmer/syntax'
 import * as Babel                                                          from '@babel/types'
 import { resolveExpression, createRootChildren, createPath, appendToPath } from './expressions'
 import { createFragment }                                                  from './elements'
@@ -7,8 +7,8 @@ import { DEFAULT_NAMESPACE_NAME, DEFAULT_KEY_NAME }                        from 
 /**
  * Resolves block type
  */
-export const resolveBlockStatement = (blockStatement: Glimmer.BlockStatement) => {
-  switch (blockStatement.path.original) {
+export const resolveBlockStatement = (blockStatement: ASTv1.BlockStatement) => {
+  switch ((blockStatement.path as ASTv1.PathExpression).original) {
     case 'if': {
       return createConditionStatement(blockStatement, false)
     }
@@ -22,7 +22,7 @@ export const resolveBlockStatement = (blockStatement: Glimmer.BlockStatement) =>
     }
 
     default: {
-      throw new Error(`Unexpected ${blockStatement.path.original} statement`)
+      throw new Error(`Unexpected ${(blockStatement.path as ASTv1.PathExpression).original} statement`)
     }
   }
 }
