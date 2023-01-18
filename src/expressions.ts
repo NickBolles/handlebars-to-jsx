@@ -20,7 +20,17 @@ export const resolveStatement = (statement: Glimmer.Statement) => {
     }
 
     case 'MustacheStatement': {
-      return resolveExpression(statement.path)
+      /*
+      statement.params
+      (1) [{…}]
+        0:  {type: 'StringLiteral', value: 'DocuSign_Comments_With_DocVis_Blocked_Tooltip', original: 'DocuSign_Comments_With_DocVis_Blocked_Tooltip', loc: SourceLocation}
+      */
+     if (statement.params?.length) {
+      const args = statement.params.map((v) => resolveExpression(v))
+      return Babel.callExpression(resolveExpression(statement.path), args);
+     } else {
+       return resolveExpression(statement.path) 
+     }
     }
 
     case 'BlockStatement': {
@@ -29,7 +39,8 @@ export const resolveStatement = (statement: Glimmer.Statement) => {
 
     case 'MustacheCommentStatement':
     case 'CommentStatement': {
-      throw new Error('Top level comments currently is not supported')
+      return createFragment([createComment(statement)])
+      // throw new Error('Top level comments currently is not supported')
     }
 
     default: {

@@ -39,6 +39,10 @@ export const createStyleObject = (hbsStatement: Glimmer.TextNode | Glimmer.Conca
       const value = hbsValue.length === 1 ? resolveStatement(hbsValue[0]) : createConcat(hbsValue)
       const isComputed = hbsKey.length > 1
 
+      if (!value) {
+        return Babel.objectProperty(key, Babel.stringLiteral("TODO-FIXME-INVALID-STYLE-PROPERTY"), false)
+      }
+
       return Babel.objectProperty(key, value, isComputed)
     })
 
